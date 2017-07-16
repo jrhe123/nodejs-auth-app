@@ -8,3 +8,26 @@
 8. Auth Guard (Login Session Authentication)
 9. Angular Flash Message Module (Notification Message)
 10. Compile & Deploy in Heroku
+
+
+API:
+
+1. POST
+http://localhost:3000/users/register
+{
+	"name": "Roy he",
+	"email": "roytest@mailinator.com",
+	"username": "jrhe",
+	"password": "123456"	
+}
+
+2. POST
+http://localhost:3000/users/authenticate
+{
+	"username": "jrhe",
+	"password": "123456"	
+}
+
+3. GET
+Authorization: 'TOKEN' from authenticate
+http://localhost:3000/users/profile
