@@ -1,0 +1,241 @@
+1. cd path: C:\mongodb\bin
+
+2. files settings: mongod --directoryperdb --dbpath C:\mongodb\data\db --logpath C:\mongodb\log\mongo.log --logappend --rest --install
+
+3. run service: net start MongoDB 
+
+4. Show DB: show dbs
+
+5. Create DB & switch to that: use testdb
+
+6. Show Current DB: db
+
+7. Create User: 
+	
+	db.createUser({
+		user: "roy",
+		pwd: "123456",
+		roles: ["readWrite", "dbAdmin"]
+	});
+
+8. Create Collection (as 'Table'):
+	
+	db.createCollection('customers');
+
+9. Show Collections: show collections
+
+10. Insert Data to collection:
+
+	db.customers.insert({
+		first_name: "John",
+		last_name: "Doe"
+	});
+
+	db.customers.insert(
+	[
+		{
+			first_name: "Smith",
+			last_name: "Howard"
+		},
+		{
+			first_name: "Roy",
+			last_name: "He",
+			gender: "male"
+		}
+	]);
+
+11. Show all rows: 
+
+	db.customers.find();
+	db.customers.find().pretty();
+
+12. Update row: (where, newJson)
+	
+	db.customers.update(
+		{
+			first_name: "John"
+		}, 
+		{
+			first_name: "John2",
+			last_name: "Doe",
+			gender: "female"
+		}
+	)
+
+	db.customers.update(
+		{
+			first_name: "John2"
+		}, 
+		{
+			$set: {
+				gender: "intersex",
+				age : 18
+			}
+		}
+	)
+
+	db.customers.update(
+		{
+			first_name: "John2"
+		}, 
+		{
+			$inc: {
+				age: 2
+			}
+		}
+	)
+
+13. Remove field from a json
+	
+	db.customers.update(
+		{
+			first_name: "John2"
+		}, 
+		{
+			$unset: {
+				age: 1
+			}
+		}
+	)	
+
+14. Insert new json if the update json is not found
+
+	db.customers.update(
+		{
+			first_name: "John"
+		}, 
+		{
+			first_name: "John2",
+			last_name: "Doe",
+			gender: "female"
+		},
+		{
+			upsert: true
+		}
+	)
+
+15. Rename the field in a json
+
+	db.customers.update(
+		{
+			first_name: "John2"
+		}, 
+		{
+			$rename: {
+				"gender" : "sex"
+			}
+		}
+	)	
+
+16. Delete json	
+	
+	db.customers.remove({first_name: "Roy"})
+
+	db.customers.remove({first_name: "Roy"}, {justOne: true})
+
+
+17. find rows (OR)
+
+	db.customers.find(
+		{
+			$or: [
+				{
+					first_name: "Tony"
+				},
+				{
+					first_name: "Allen"
+				}
+			]
+		}
+	)
+
+18. find rows (greater than / less than)
+
+	($gt/$lt/$gte/$lte)
+
+	db.customers.find(
+		{
+			age: {
+				$lt : 40
+			}
+		}
+	)	
+
+19. find row in json.object
+
+	db.customers.find(
+		{
+			"address.city" : "Toronto"
+		}
+	)
+
+20. Sorting
+	
+	1: asc
+	-1: desc
+
+	db.customers.find().sort({
+		last_name : 1
+	})	
+
+21. count
+
+	db.customers.find().count();
+
+22. limit
+	
+	db.customers.find().limit(4);	
+
+23. foreach func
+
+	db.customers.find().forEach(function(doc){
+		print("Customer: " + doc.first_name)
+	})	
+
+
+=========================================================
+Temp Data
+
+	db.customers.insert(
+		[
+			{
+				first_name: "Tony",
+				last_name: "He",
+				gender: "male",
+				age: 33,
+				address:{
+					street: "123 college st",
+					city: "Toronto",
+					state: "MA"
+				},
+				memberships: ["mem1", "mem2"],
+				balance: 123.12			
+			},
+			{
+				first_name: "Allen",
+				last_name: "He",
+				gender: "male",
+				age: 35,
+				address:{
+					street: "234 college st",
+					city: "Toronto",
+					state: "MA"
+				},
+				memberships: ["mem1", "mem2"],
+				balance: 222.00			
+			},
+			{
+				first_name: "Kobe",
+				last_name: "He",
+				gender: "male",
+				age: 19,
+				address:{
+					street: "987 college st",
+					city: "Toronto",
+					state: "MA"
+				},
+				memberships: ["mem1", "mem2"],
+				balance: 98.89			
+			}
+		]
+	)
