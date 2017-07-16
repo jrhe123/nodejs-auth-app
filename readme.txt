@@ -1,3 +1,5 @@
+#Backend Part
+
 1. Restful API: Node.js / Express
 2. Token Generation & Authentication: JWT (Json Web Token)
 3. CORS: Back-end, Front-end (separate), different ports
